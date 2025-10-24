@@ -9,11 +9,6 @@ const Questions = ({ questions, scenarioTitle }) => {
         <span className="panel-title">QUESTIONS</span>
       </div>
 
-      <div className="scenario-title">
-        <div className="scenario-label">SCENARIO:</div>
-        <div className="scenario-name">{scenarioTitle}</div>
-      </div>
-
       <div className="questions-content">
         {questions.map((question, index) => (
           <div key={question.id} className="question-card">

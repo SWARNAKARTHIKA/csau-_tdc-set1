@@ -8,7 +8,7 @@ app.use(express.json());
 const scenarios = [
   {
     id: 1,
-    title: "The Suspicious Pen Drive",
+    title: "Scenario 1",
     systemLog: [
       "[19/10/2025 09:00:12] DEVICE CONNECTED – USB_Storage",
       "[19/10/2025 09:00:35] FILE COPIED – /college_data/students.csv → USB_Storage",
@@ -57,7 +57,7 @@ antivirus_scan = disabled`,
   },
   {
     id: 2,
-    title: "The Hidden Administrator",
+    title: "Scenario 2",
     systemLog: [
       "[26/10/2025 08:55:10] LOGIN SUCCESS – user: admin",
       "[26/10/2025 08:56:45] USER CREATED – username: temp_admin",
