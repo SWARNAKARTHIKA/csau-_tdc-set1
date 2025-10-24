@@ -1,0 +1,140 @@
+.system-log {
+  background: #0f1729;
+  border: 2px solid #00ff41;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
+  background: linear-gradient(135deg, #1a1f3a 0%, #0f1729 100%);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #00ff41;
+}
+
+.panel-icon {
+  font-size: 1.2rem;
+}
+
+.panel-title {
+  flex: 1;
+  font-weight: bold;
+  color: #00ff41;
+  letter-spacing: 2px;
+}
+
+.panel-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.control-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.control-dot.red {
+  background: #ff5f56;
+  box-shadow: 0 0 5px #ff5f56;
+}
+
+.control-dot.yellow {
+  background: #ffbd2e;
+  box-shadow: 0 0 5px #ffbd2e;
+}
+
+.control-dot.green {
+  background: #27c93f;
+  box-shadow: 0 0 5px #27c93f;
+}
+
+.log-content {
+  padding: 20px;
+  flex: 1;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  overflow-y: auto;
+  background: #000;
+}
+
+.terminal {
+  color: #00ff41;
+  line-height: 1.8;
+}
+
+.terminal-prompt {
+  color: #5af78e;
+  margin-bottom: 10px;
+}
+
+.terminal-prompt::after {
+  content: '▋';
+  animation: blink 1s infinite;
+  margin-left: 5px;
+}
+
+.log-entry {
+  margin: 5px 0;
+  padding-left: 10px;
+}
+
+.log-bracket {
+  color: #ff00de;
+  font-weight: bold;
+}
+
+.log-text {
+  margin: 0 5px;
+}
+
+.log-cursor {
+  color: #00ff41;
+  animation: blink 0.7s infinite;
+  margin-top: 5px;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Scrollbar */
+.log-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.log-content::-webkit-scrollbar-track {
+  background: #0a0e27;
+}
+
+.log-content::-webkit-scrollbar-thumb {
+  background: #00ff41;
+  border-radius: 4px;
+}
+
+.log-content::-webkit-scrollbar-thumb:hover {
+  background: #5af78e;
+}
