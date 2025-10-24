@@ -170,7 +170,7 @@ function App() {
           <span>SYSTEM STATUS: ONLINE</span>
         </div>
         <div className="footer-line">
-          USER: Sharieff-Suhaib | SESSION: ACTIVE
+          USER: 😎 | SESSION: ACTIVE
         </div>
       </footer>
     </div>
