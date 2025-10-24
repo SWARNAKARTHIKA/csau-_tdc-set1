@@ -12,6 +12,7 @@ function App() {
   const [currentScenario, setCurrentScenario] = useState(null);
   const [loading, setLoading] = useState(true);
   const [timerActive, setTimerActive] = useState(false);
+  const [completedScenarios, setCompletedScenarios] = useState([]);
 
   useEffect(() => {
     fetchScenarios();
@@ -19,7 +20,7 @@ function App() {
 
   const fetchScenarios = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/scenarios');
+      const response = await axios.get('/api/scenarios');
       setScenarios(response.data);
       setCurrentScenario(response.data[0]);
       setLoading(false);
@@ -30,14 +31,33 @@ function App() {
   };
 
   const handleScenarioChange = (scenarioId) => {
+    if (currentScenario && !completedScenarios.includes(currentScenario.id)) {
+      setCompletedScenarios(prev => [...prev, currentScenario.id]);
+    }
+    
     const scenario = scenarios.find(s => s.id === scenarioId);
     setCurrentScenario(scenario);
-    setTimerActive(false);
   };
 
   const handleStartChallenge = () => {
     setTimerActive(true);
   };
+
+  const handleSubmit = () => {
+    if (currentScenario && !completedScenarios.includes(currentScenario.id)) {
+      setCompletedScenarios(prev => [...prev, currentScenario.id]);
+    }
+    
+    setTimerActive(false);
+    alert('Challenge submitted successfully! 🎉\n\nAll scenarios completed.\nGood luck with your evaluation!');
+  };
+
+  const handleTimeComplete = () => {
+    setTimerActive(false);
+    alert('Time\'s up! ⏰\n\nThe challenge has ended.\nPlease submit your answer sheet.');
+  };
+
+  const allScenariosCompleted = completedScenarios.length === scenarios.length;
 
   if (loading) {
     return (
@@ -55,9 +75,9 @@ function App() {
       <header className="app-header">
         <div className="header-left">
           <h1 className="glitch" data-text="The Digital Chase">The Digital Chase</h1>
-          <div className="header-subtitle">Events Team • Cybersecurity Assessment</div>
+          <div className="header-subtitle">CSAU Team</div>
         </div>
-        <Timer duration={1200} active={timerActive} onComplete={() => alert('Time\'s up!')} />
+        <Timer duration={1200} active={timerActive} onComplete={handleTimeComplete} />
       </header>
 
       <ScenarioSelector 
@@ -65,7 +85,10 @@ function App() {
         currentScenario={currentScenario}
         onScenarioChange={handleScenarioChange}
         onStartChallenge={handleStartChallenge}
+        onSubmit={handleSubmit}
         timerActive={timerActive}
+        completedScenarios={completedScenarios}
+        allScenariosCompleted={allScenariosCompleted}
       />
 
       {currentScenario && (
@@ -90,7 +113,7 @@ function App() {
           <span>SYSTEM STATUS: ONLINE</span>
         </div>
         <div className="footer-line">
-          USER: Sharieff-Suhaib | SESSION: ACTIVE
+          USER: Sharieff-Suhaib | SESSION: ACTIVE | COMPLETED: {completedScenarios.length}/{scenarios.length}
         </div>
       </footer>
     </div>

@@ -35,9 +35,10 @@
   align-items: center;
   gap: 10px;
   font-size: 0.85rem;
+  position: relative;
 }
 
-.scenario-btn:hover:not(:disabled) {
+.scenario-btn:hover {
   background: rgba(0, 255, 65, 0.2);
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 255, 65, 0.3);
@@ -49,9 +50,9 @@
   box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
 }
 
-.scenario-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.scenario-btn.completed {
+  border-color: #5af78e;
+  background: rgba(90, 247, 142, 0.15);
 }
 
 .scenario-number {
@@ -67,6 +68,22 @@
 
 .scenario-title {
   font-size: 0.8rem;
+}
+
+.check-mark {
+  color: #5af78e;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.scenario-btn.active .check-mark {
+  color: #000;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
 
 .start-button {
@@ -92,6 +109,42 @@
 }
 
 .start-icon {
+  font-size: 1.2rem;
+}
+
+.submit-button {
+  background: linear-gradient(135deg, #ff00de 0%, #00ffff 100%);
+  border: none;
+  color: #000;
+  padding: 12px 30px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(255, 0, 222, 0.5);
+  animation: pulse-submit 2s infinite;
+}
+
+.submit-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255, 0, 222, 0.8);
+}
+
+@keyframes pulse-submit {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 0, 222, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 0, 222, 0.8);
+  }
+}
+
+.submit-icon {
   font-size: 1.2rem;
 }
 
@@ -139,5 +192,10 @@
   .scenario-btn {
     flex: 1;
     min-width: 150px;
+  }
+
+  .action-buttons {
+    width: 100%;
+    justify-content: center;
   }
 }

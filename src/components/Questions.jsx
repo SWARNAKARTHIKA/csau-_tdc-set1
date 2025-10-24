@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../css/Questions.css';
 
 const Questions = ({ questions, scenarioTitle }) => {
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
-
   const totalMarks = questions.reduce((sum, q) => sum + q.marks, 0);
 
   return (
@@ -27,44 +25,16 @@ const Questions = ({ questions, scenarioTitle }) => {
                 <span className="q-label">Q{index + 1}</span>
               </div>
               <div className="question-marks">[{question.marks} marks]</div>
-              <button 
-                className="info-button"
-                onClick={() => setSelectedQuestion(selectedQuestion === question.id ? null : question.id)}
-                title="View evaluation criteria"
-              >
-                <span className="info-icon">ⓘ</span>
-              </button>
             </div>
 
             <div className="question-text">{question.text}</div>
-
-            {selectedQuestion === question.id && (
-              <div className="criteria-dropdown">
-                <div className="criteria-header">📋 Evaluation Criteria:</div>
-                <ul className="criteria-list">
-                  {question.criteria.map((criterion, idx) => (
-                    <li key={idx} className="criterion-item">
-                      <span className="criterion-bullet">▸</span>
-                      {criterion}
-                    </li>
-                  ))}
-                </ul>
-                <div className="model-answer">
-                  <div className="answer-label">💡 Model Answer:</div>
-                  <div className="answer-text">{question.answer}</div>
-                </div>
-              </div>
-            )}
-
-            <div className="answer-area">
-              <textarea 
-                placeholder="Type your answer here..."
-                className="answer-input"
-                rows="4"
-              />
-            </div>
           </div>
         ))}
+      </div>
+
+      <div className="instruction-note">
+        <span className="note-icon">📝</span>
+        <span>Write your answers on the provided answer sheet</span>
       </div>
     </div>
   );

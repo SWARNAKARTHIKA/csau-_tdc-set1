@@ -135,6 +135,7 @@ body {
   gap: 20px;
   padding: 20px;
   flex: 1;
+  align-items: start;
 }
 
 .left-panel,
@@ -142,6 +143,11 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: 100%;
+}
+
+.right-panel {
+  min-height: 100%;
 }
 
 /* Footer */
