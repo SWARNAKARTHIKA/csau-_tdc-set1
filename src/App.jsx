@@ -11,8 +11,15 @@ function App() {
   const [scenarios, setScenarios] = useState([]);
   const [currentScenario, setCurrentScenario] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [timerActive, setTimerActive] = useState(false);
-  const [completedScenarios, setCompletedScenarios] = useState([]);
+  
+  const [timerActive, setTimerActive] = useState(() => {
+    const saved = localStorage.getItem('timerState');
+    if (saved) {
+      const { isActive } = JSON.parse(saved);
+      return isActive;
+    }
+    return false;
+  });
 
   useEffect(() => {
     fetchScenarios();
@@ -22,7 +29,16 @@ function App() {
     try {
       const response = await axios.get('/api/scenarios');
       setScenarios(response.data);
-      setCurrentScenario(response.data[0]);
+      
+      const savedScenario = localStorage.getItem('currentScenario');
+      if (savedScenario) {
+        const scenarioId = parseInt(savedScenario);
+        const scenario = response.data.find(s => s.id === scenarioId);
+        setCurrentScenario(scenario || response.data[0]);
+      } else {
+        setCurrentScenario(response.data[0]);
+      }
+      
       setLoading(false);
     } catch (error) {
       console.error('Error fetching scenarios:', error);
@@ -31,33 +47,39 @@ function App() {
   };
 
   const handleScenarioChange = (scenarioId) => {
-    if (currentScenario && !completedScenarios.includes(currentScenario.id)) {
-      setCompletedScenarios(prev => [...prev, currentScenario.id]);
-    }
-    
     const scenario = scenarios.find(s => s.id === scenarioId);
     setCurrentScenario(scenario);
+    localStorage.setItem('currentScenario', scenarioId.toString());
   };
 
   const handleStartChallenge = () => {
     setTimerActive(true);
+    localStorage.setItem('timerState', JSON.stringify({
+      timeLeft: 1200,
+      timestamp: Date.now(),
+      isActive: true
+    }));
   };
 
   const handleSubmit = () => {
-    if (currentScenario && !completedScenarios.includes(currentScenario.id)) {
-      setCompletedScenarios(prev => [...prev, currentScenario.id]);
-    }
+    const confirmSubmit = window.confirm(
+      'Are you sure you want to submit?\n\nOnce submitted, you cannot continue the challenge.'
+    );
     
-    setTimerActive(false);
-    alert('Challenge submitted successfully! 🎉\n\nAll scenarios completed.\nGood luck with your evaluation!');
+    if (confirmSubmit) {
+      setTimerActive(false);
+      localStorage.removeItem('timerState');
+      localStorage.removeItem('currentScenario');
+      alert('Challenge submitted successfully! 🎉\n\nPlease hand in your answer sheet.\nGood luck!');
+    }
   };
 
   const handleTimeComplete = () => {
     setTimerActive(false);
-    alert('Time\'s up! ⏰\n\nThe challenge has ended.\nPlease submit your answer sheet.');
+    localStorage.removeItem('timerState');
+    localStorage.removeItem('currentScenario');
+    alert('Time\'s up! ⏰\n\nThe challenge has ended.\nPlease submit your answer sheet immediately.');
   };
-
-  const allScenariosCompleted = completedScenarios.length === scenarios.length;
 
   if (loading) {
     return (
@@ -87,8 +109,6 @@ function App() {
         onStartChallenge={handleStartChallenge}
         onSubmit={handleSubmit}
         timerActive={timerActive}
-        completedScenarios={completedScenarios}
-        allScenariosCompleted={allScenariosCompleted}
       />
 
       {currentScenario && (
@@ -113,7 +133,7 @@ function App() {
           <span>SYSTEM STATUS: ONLINE</span>
         </div>
         <div className="footer-line">
-          USER: Sharieff-Suhaib | SESSION: ACTIVE | COMPLETED: {completedScenarios.length}/{scenarios.length}
+          USER: 😎 | SESSION: ACTIVE
         </div>
       </footer>
     </div>

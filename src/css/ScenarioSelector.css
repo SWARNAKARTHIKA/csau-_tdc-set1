@@ -45,14 +45,12 @@
 }
 
 .scenario-btn.active {
-  background: #00ff41;
-  color: #000;
-  box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
-}
-
-.scenario-btn.completed {
+  background: rgba(0, 255, 65, 0.2);
+  color: #00ff41;
   border-color: #5af78e;
-  background: rgba(90, 247, 142, 0.15);
+  border-width: 3px;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+  font-weight: bold;
 }
 
 .scenario-number {
@@ -60,24 +58,22 @@
   padding: 2px 8px;
   border-radius: 3px;
   font-weight: bold;
+  color: #00ff41;
 }
 
 .scenario-btn.active .scenario-number {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 255, 65, 0.3);
+  color: #000;
+  font-weight: bold;
 }
 
 .scenario-title {
   font-size: 0.8rem;
 }
 
-.check-mark {
+.scenario-btn.active .scenario-title {
   color: #5af78e;
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.scenario-btn.active .check-mark {
-  color: #000;
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
 }
 
 .action-buttons {

@@ -109,24 +109,10 @@
   border-left: 3px solid #00ff41;
 }
 
-.instruction-note {
-  background: rgba(255, 0, 222, 0.1);
-  border-top: 2px solid #ff00de;
-  padding: 15px 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #ff00de;
-  font-size: 0.9rem;
-  font-style: italic;
-  margin-top: auto;
-}
-
 .note-icon {
   font-size: 1.2rem;
 }
 
-/* Scrollbar */
 .questions-content::-webkit-scrollbar {
   width: 8px;
 }

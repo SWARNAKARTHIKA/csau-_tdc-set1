@@ -31,11 +31,6 @@ const Questions = ({ questions, scenarioTitle }) => {
           </div>
         ))}
       </div>
-
-      <div className="instruction-note">
-        <span className="note-icon">📝</span>
-        <span>Write your answers on the provided answer sheet</span>
-      </div>
     </div>
   );
 };

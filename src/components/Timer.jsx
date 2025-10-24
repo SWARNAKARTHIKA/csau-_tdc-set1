@@ -2,18 +2,47 @@ import React, { useState, useEffect } from 'react';
 import '../css/Timer.css';
 
 const Timer = ({ duration, active, onComplete }) => {
-  const [timeLeft, setTimeLeft] = useState(duration);
+  const [timeLeft, setTimeLeft] = useState(() => {
+    const saved = localStorage.getItem('timerState');
+    if (saved) {
+      const { timeLeft, timestamp, isActive } = JSON.parse(saved);
+      if (isActive) {
+        const elapsed = Math.floor((Date.now() - timestamp) / 1000);
+        const remaining = Math.max(0, timeLeft - elapsed);
+        return remaining;
+      }
+    }
+    return duration;
+  });
   const [isWarning, setIsWarning] = useState(false);
 
   useEffect(() => {
     if (active) {
-      setTimeLeft(duration);
+      localStorage.setItem('timerState', JSON.stringify({
+        timeLeft,
+        timestamp: Date.now(),
+        isActive: true
+      }));
+    }
+  }, [timeLeft, active]);
+
+  // Reset timer when challenge starts
+  useEffect(() => {
+    if (active) {
+      const saved = localStorage.getItem('timerState');
+      if (!saved) {
+        setTimeLeft(duration);
+      }
+    } else {
+      // Clear localStorage when timer stops
+      localStorage.removeItem('timerState');
     }
   }, [active, duration]);
 
   useEffect(() => {
     if (!active || timeLeft <= 0) {
       if (timeLeft === 0 && onComplete) {
+        localStorage.removeItem('timerState');
         onComplete();
       }
       return;
