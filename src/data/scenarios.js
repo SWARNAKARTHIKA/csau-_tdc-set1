@@ -1,4 +1,4 @@
-const scenarios = [
+export const scenarios = [
   {
     id: 1,
     title: "Scenario 1",
@@ -105,28 +105,3 @@ password_rules = min_length: 4, no_special_chars`,
     ]
   }
 ];
-
-module.exports = (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-
-  const pathParts = req.url.split('/');
-  const scenarioId = pathParts[pathParts.length - 1];
-
-  if (scenarioId && !isNaN(scenarioId)) {
-    const scenario = scenarios.find(s => s.id === parseInt(scenarioId));
-    if (scenario) {
-      res.status(200).json(scenario);
-    } else {
-      res.status(404).json({ error: 'Scenario not found' });
-    }
-  } else {
-    res.status(200).json(scenarios);
-  }
-};

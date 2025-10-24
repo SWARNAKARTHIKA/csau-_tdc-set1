@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import './App.css';
 import SystemLog from './components/SystemLog';
 import ConfigFile from './components/ConfigFile';
 import Questions from './components/Questions';
 import Timer from './components/Timer';
 import ScenarioSelector from './components/ScenarioSelector';
+import { scenarios } from './data/scenarios';
 
 function App() {
-  const [scenarios, setScenarios] = useState([]);
-  const [currentScenario, setCurrentScenario] = useState(null);
+  const [currentScenario, setCurrentScenario] = useState(scenarios[0]);
   const [loading, setLoading] = useState(true);
+  const [multipleTabsWarning, setMultipleTabsWarning] = useState(false);
   
   const [timerActive, setTimerActive] = useState(() => {
     const saved = localStorage.getItem('timerState');
@@ -22,29 +22,38 @@ function App() {
   });
 
   useEffect(() => {
-    fetchScenarios();
+    const tabId = Date.now().toString();
+    sessionStorage.setItem('tabId', tabId);
+    
+    const handleStorage = (e) => {
+      if (e.key === 'tabId' && e.newValue !== tabId) {
+        setMultipleTabsWarning(true);
+      }
+    };
+
+    const interval = setInterval(() => {
+      localStorage.setItem('tabId', tabId);
+    }, 1000);
+
+    window.addEventListener('storage', handleStorage);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('storage', handleStorage);
+    };
   }, []);
 
-  const fetchScenarios = async () => {
-    try {
-      const response = await axios.get('/api/scenarios');
-      setScenarios(response.data);
-      
+  useEffect(() => {
+    setTimeout(() => {
       const savedScenario = localStorage.getItem('currentScenario');
       if (savedScenario) {
         const scenarioId = parseInt(savedScenario);
-        const scenario = response.data.find(s => s.id === scenarioId);
-        setCurrentScenario(scenario || response.data[0]);
-      } else {
-        setCurrentScenario(response.data[0]);
+        const scenario = scenarios.find(s => s.id === scenarioId);
+        setCurrentScenario(scenario || scenarios[0]);
       }
-      
       setLoading(false);
-    } catch (error) {
-      console.error('Error fetching scenarios:', error);
-      setLoading(false);
-    }
-  };
+    }, 500);
+  }, []);
 
   const handleScenarioChange = (scenarioId) => {
     const scenario = scenarios.find(s => s.id === scenarioId);
@@ -80,6 +89,34 @@ function App() {
     localStorage.removeItem('currentScenario');
     alert('Time\'s up! ⏰\n\nThe challenge has ended.\nPlease submit your answer sheet immediately.');
   };
+
+  if (multipleTabsWarning) {
+    return (
+      <div className="loading-screen">
+        <div className="terminal-loading" style={{color: '#ff0000'}}>
+          <div className="loading-text" style={{fontSize: '1.2rem'}}>⚠️ WARNING: MULTIPLE TABS DETECTED</div>
+          <p style={{marginTop: '20px', color: '#00ff41'}}>
+            Please close all other tabs and use only ONE tab for this challenge.
+          </p>
+          <button 
+            onClick={() => setMultipleTabsWarning(false)}
+            style={{
+              marginTop: '20px',
+              padding: '10px 20px',
+              background: '#00ff41',
+              border: 'none',
+              color: '#000',
+              cursor: 'pointer',
+              borderRadius: '5px',
+              fontFamily: 'Courier New'
+            }}
+          >
+            I understand - Continue with this tab
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -133,7 +170,7 @@ function App() {
           <span>SYSTEM STATUS: ONLINE</span>
         </div>
         <div className="footer-line">
-          USER: 😎 | SESSION: ACTIVE
+          USER: Sharieff-Suhaib | SESSION: ACTIVE
         </div>
       </footer>
     </div>
