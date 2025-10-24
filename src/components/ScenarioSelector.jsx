@@ -1,5 +1,5 @@
 import React from 'react';
-import './ScenarioSelector.css';
+import '../css/ScenarioSelector.css';
 
 const ScenarioSelector = ({ scenarios, currentScenario, onScenarioChange, onStartChallenge, timerActive }) => {
   return (

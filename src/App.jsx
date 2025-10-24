@@ -54,7 +54,7 @@ function App() {
     <div className="App">
       <header className="app-header">
         <div className="header-left">
-          <h1 className="glitch" data-text="i++ SECURITY CHALLENGE">i++ SECURITY CHALLENGE</h1>
+          <h1 className="glitch" data-text="The Digital Chase">The Digital Chase</h1>
           <div className="header-subtitle">Events Team • Cybersecurity Assessment</div>
         </div>
         <Timer duration={1200} active={timerActive} onComplete={() => alert('Time\'s up!')} />

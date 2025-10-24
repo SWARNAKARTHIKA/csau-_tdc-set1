@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './SystemLog.css';
+import '../css/SystemLog.css';
 
 const SystemLog = ({ logs }) => {
   const [displayedLogs, setDisplayedLogs] = useState([]);

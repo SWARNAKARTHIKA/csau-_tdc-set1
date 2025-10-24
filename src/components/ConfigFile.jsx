@@ -1,5 +1,5 @@
 import React from 'react';
-import './ConfigFile.css';
+import '../css/ConfigFile.css';
 
 const ConfigFile = ({ config }) => {
   const configLines = config.split('\n');
