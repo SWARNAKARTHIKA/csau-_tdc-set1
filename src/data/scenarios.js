@@ -1,7 +1,7 @@
 export const scenarios = [
   {
     id: 1,
-    title: "Question 1 (Easy)",
+    title: "Question 1 ",
     systemLog: [
       "[22/10/2025 09:30:12] USER LOGIN – admin (IP: 192.168.10.45)",
       "[22/10/2025 09:32:50] LOGIN FAILED –admin (IP: 203.0.113.56)",
@@ -60,38 +60,35 @@ MaxAuthTries 10
   },
   {
     id: 2,
-    title: "Question 2 (Medium)",
+    title: "Question 2",
     systemLog: [
-      "[28/10/2025 09:10:55] USER LOGIN – User1",
-      "[28/10/2025 09:12:33] APPLICATION INSTALLED – app_name: QuickNotes",
-      "[28/10/2025 09:12:59] TEMP FILE CREATED – /logs/install_temp.tmp",
-      "[28/10/2025 09:13:00] PROCESS STARTED – QuickNotes.exe",
-      "[28/10/2025 09:13:10] SYSTEM CHECK – Memory usage: 85%",
-      "[28/10/2025 09:15:42] OUTBOUND CONNECTION – 185.76.22.90:443",
-      "[28/10/2025 09:16:01] FIREWALL WARNING – ignored",
-      "[28/10/2025 09:17:00] LOCAL BACKUP – completed",
-      "[28/10/2025 09:18:55] SYSTEM SLOWDOWN DETECTED",
-      "[28/10/2025 09:20:12] UPDATE CHECK – Skipped due to policy restrictions"
+      "root@finance-server:~$",
+      "[26/10/2025 11:05:22] LOGIN SUCCESS – user: auditor",
+      "[26/10/2025 11:06:18] DATABASE QUERY – SELECT * FROM payroll_data",
+      "[26/10/2025 11:08:02] EXPORT INITIATED – payroll_data.csv (size: 32MB)",
+      "[26/10/2025 11:09:45] NETWORK TRANSFER – Destination: 198.162.4.50",
+      "[26/10/2025 11:10:11] ACCESS REVOKED – user: auditor",
+      "[26/10/2025 11:10:12] NEW USER CREATED – user: audit_backup",
+      "[26/10/2025 11:11:20] PERMISSIONS MODIFIED – audit_backup → admin_access",
+      "[26/10/2025 11:11:45] LOG ENTRY DELETED – user_activity.log (last 10 lines removed)",
+      "[26/10/2025 11:12:00] LOGIN FAILED – user: audit"
     ],
-    configFile: `software_whitelist = off
-firewall_outbound_control = disabled
-application_monitor = off
-update_policy = manual
-user_privilege = admin
-auto_audit_logs = off
-network_latency_monitor = on
-backup_schedule = daily`,
+    configFile: `// /etc/db/security_policies.conf
+data_export = unrestricted
+network_monitoring = off
+temporary_users = allowed
+multi_factor_auth = disabled`,
     questions: [
       {
         id: 1,
         text: "What suspicious thing happened?",
         marks: 5,
         answer:
-          "A user installed an unauthorized application, initiated an outbound connection, ignored firewall warnings, and skipped updates, leading to system slowdown.",
+          "After accessing payroll data, the auditor account exported it and transferred it externally. Immediately after access was revoked, a new admin-level user 'audit_backup' was created, indicating possible privilege abuse or credential compromise.",
         criteria: [
-          "Identified unauthorized application installation",
-          "Recognized outbound connection and ignored firewall warning",
-          "Noted skipped updates and system slowdown"
+          "Identified data export and external transfer",
+          "Recognized creation of unauthorized admin user",
+          "Linked sequence to insider or credential misuse"
         ]
       },
       {
@@ -99,13 +96,13 @@ backup_schedule = daily`,
         text: "Which settings made it possible?",
         marks: 10,
         answer:
-          "Software whitelisting was off, firewall outbound control was disabled, application monitoring was off, and auto audit logs were disabled.",
+          "Data export was unrestricted, network monitoring was off, temporary user creation was allowed, and multi-factor authentication was disabled — all of which made it easier for the attacker to exfiltrate data and escalate privileges.",
         criteria: [
-          "Identified software_whitelist = off",
-          "Noted firewall_outbound_control = disabled",
-          "Mentioned application_monitor = off",
-          "Recognized auto_audit_logs = off",
-          "Explained combined security risks"
+          "Identified data_export = unrestricted",
+          "Noted network_monitoring = off",
+          "Mentioned temporary_users = allowed",
+          "Recognized multi_factor_auth = disabled",
+          "Explained how these enabled data theft and persistence"
         ]
       },
       {
@@ -113,13 +110,13 @@ backup_schedule = daily`,
         text: "How can the IT team prevent this?",
         marks: 10,
         answer:
-          "Enable software whitelisting, activate firewall controls, turn on application monitoring, and enforce automatic updates and audit logging.",
+          "Restrict data export permissions, enable continuous network monitoring, disallow temporary user creation without admin approval, and enforce multi-factor authentication for all privileged accounts.",
         criteria: [
-          "Suggested enabling software whitelisting",
-          "Recommended activating firewall outbound control",
-          "Mentioned enabling application monitoring",
-          "Proposed enforcing automatic updates and audit logs",
-          "Provided comprehensive security framework"
+          "Suggested restricting data_export",
+          "Recommended enabling network monitoring",
+          "Advised disallowing temporary user creation",
+          "Proposed enabling multi-factor authentication",
+          "Provided full prevention strategy for insider attacks"
         ]
       }
     ]
