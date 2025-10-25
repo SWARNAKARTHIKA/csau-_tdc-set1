@@ -3,47 +3,57 @@ export const scenarios = [
     id: 1,
     title: "Question 1 (Easy)",
     systemLog: [
-      "[25/10/2025 13:15:10] EMAIL SENT – to: external@companyX.com, subject: \"Client Data\"",
-      "[25/10/2025 13:15:12] ATTACHMENT – /projects/client_list.pdf",
-      "[25/10/2025 13:15:14] EMAIL SENT SUCCESSFULLY"
+      "[22/10/2025 09:30:12] USER LOGIN – admin (IP: 192.168.10.45)",
+      "[22/10/2025 09:32:50] LOGIN FAILED – guest (IP: 203.0.113.56)",
+      "[22/10/2025 09:33:05] LOGIN FAILED – guest (IP: 203.0.113.56)",
+      "[22/10/2025 09:33:19] LOGIN FAILED – guest (IP: 203.0.113.56)",
+      "[22/10/2025 09:34:02] LOGIN SUCCESS – admin (IP: 203.0.113.56)",
+      "[22/10/2025 09:36:10] FILE ACCESSED – /secure/financial_records.db",
+      "[22/10/2025 09:40:27] FILE TRANSFER – external destination detected"
     ],
-    configFile: `email_attachment_limit = none
-data_loss_prevention = off
-external_email_restriction = disabled`,
+    configFile: `PermitRootLogin yes
+PasswordAuthentication yes
+MaxAuthTries 10
+AllowUsers admin guest`,
     questions: [
       {
         id: 1,
-        text: "What suspicious thing happened?",
+        text: "What indicates that the system may have been accessed by an unauthorized user?",
         marks: 5,
-        answer: "An email with sensitive client data was sent to an external address without any restrictions or checks.",
+        answer:
+          "Multiple failed login attempts from the same external IP (203.0.113.56) followed by a successful admin login indicate possible brute-force or credential theft.",
         criteria: [
-          "Identified email sent to external recipient",
-          "Recognized attachment of sensitive data (client_list.pdf)",
-          "Noted lack of restrictions or alerts"
+          "Identified repeated failed logins from the same IP",
+          "Recognized subsequent successful admin login from that IP",
+          "Linked the pattern to brute-force or stolen credentials"
         ]
       },
       {
         id: 2,
-        text: "Which settings made it possible?",
+        text: "What configuration setting increased the risk of compromise?",
         marks: 10,
-        answer: "Email attachment limits were set to none, data loss prevention was off, and external email restrictions were disabled.",
+        answer:
+          "PermitRootLogin and PasswordAuthentication were enabled, MaxAuthTries was too high, and the guest account was allowed—all increasing vulnerability.",
         criteria: [
-          "Identified email_attachment_limit = none",
-          "Noted data_loss_prevention = off",
-          "Mentioned external_email_restriction = disabled",
-          "Explained the security implications"
+          "Identified PermitRootLogin = yes",
+          "Noted PasswordAuthentication = yes",
+          "Mentioned MaxAuthTries = 10 (too high)",
+          "Recognized guest account as unnecessary risk",
+          "Explained how these settings reduced security"
         ]
       },
       {
         id: 3,
-        text: "How can the IT team prevent this?",
+        text: "What changes should be made to the configuration to improve security?",
         marks: 10,
-        answer: "Enable data loss prevention, set attachment limits, and restrict external emails.",
+        answer:
+          "Disable root login, use SSH key-based authentication, lower MaxAuthTries, and remove guest access.",
         criteria: [
-          "Suggested enabling data loss prevention",
-          "Recommended setting email attachment limits",
-          "Mentioned restricting external emails",
-          "Provided comprehensive security solution"
+          "Suggested PermitRootLogin = no",
+          "Recommended PasswordAuthentication = no (use SSH keys)",
+          "Proposed reducing MaxAuthTries to 3 or fewer",
+          "Advised removing guest from AllowUsers",
+          "Provided comprehensive secure configuration"
         ]
       }
     ]
@@ -76,7 +86,8 @@ backup_schedule = daily`,
         id: 1,
         text: "What suspicious thing happened?",
         marks: 5,
-        answer: "A user installed an unauthorized application, initiated an outbound connection, ignored firewall warnings, and skipped updates, leading to system slowdown.",
+        answer:
+          "A user installed an unauthorized application, initiated an outbound connection, ignored firewall warnings, and skipped updates, leading to system slowdown.",
         criteria: [
           "Identified unauthorized application installation",
           "Recognized outbound connection and ignored firewall warning",
@@ -87,7 +98,8 @@ backup_schedule = daily`,
         id: 2,
         text: "Which settings made it possible?",
         marks: 10,
-        answer: "Software whitelisting was off, firewall outbound control was disabled, application monitoring was off, and auto audit logs were disabled.",
+        answer:
+          "Software whitelisting was off, firewall outbound control was disabled, application monitoring was off, and auto audit logs were disabled.",
         criteria: [
           "Identified software_whitelist = off",
           "Noted firewall_outbound_control = disabled",
@@ -100,7 +112,8 @@ backup_schedule = daily`,
         id: 3,
         text: "How can the IT team prevent this?",
         marks: 10,
-        answer: "Enable software whitelisting, activate firewall controls, turn on application monitoring, and enforce automatic updates and audit logging.",
+        answer:
+          "Enable software whitelisting, activate firewall controls, turn on application monitoring, and enforce automatic updates and audit logging.",
         criteria: [
           "Suggested enabling software whitelisting",
           "Recommended activating firewall outbound control",
