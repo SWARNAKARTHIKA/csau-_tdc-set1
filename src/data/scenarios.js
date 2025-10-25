@@ -4,9 +4,9 @@ export const scenarios = [
     title: "Question 1 (Easy)",
     systemLog: [
       "[22/10/2025 09:30:12] USER LOGIN – admin (IP: 192.168.10.45)",
-      "[22/10/2025 09:32:50] LOGIN FAILED – guest (IP: 203.0.113.56)",
-      "[22/10/2025 09:33:05] LOGIN FAILED – guest (IP: 203.0.113.56)",
-      "[22/10/2025 09:33:19] LOGIN FAILED – guest (IP: 203.0.113.56)",
+      "[22/10/2025 09:32:50] LOGIN FAILED –admin (IP: 203.0.113.56)",
+      "[22/10/2025 09:33:05] LOGIN FAILED – admin (IP: 203.0.113.56)",
+      "[22/10/2025 09:33:19] LOGIN FAILED – admin (IP: 203.0.113.56)",
       "[22/10/2025 09:34:02] LOGIN SUCCESS – admin (IP: 203.0.113.56)",
       "[22/10/2025 09:36:10] FILE ACCESSED – /secure/financial_records.db",
       "[22/10/2025 09:40:27] FILE TRANSFER – external destination detected"
@@ -14,7 +14,7 @@ export const scenarios = [
     configFile: `PermitRootLogin yes
 PasswordAuthentication yes
 MaxAuthTries 10
-AllowUsers admin guest`,
+`,
     questions: [
       {
         id: 1,
